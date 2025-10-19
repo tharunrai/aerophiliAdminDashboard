@@ -1,0 +1,130 @@
+/* --- Google Font for a clean, modern look --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Base Styles --- */
+body {
+    background-color: #f4f7fa; /* Light grey background */
+    font-family: 'Inter', sans-serif;
+    color: #2d3748; /* Dark grey text */
+    margin: 0;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.5rem;
+    color: #718096;
+}
+
+.dashboard-container {
+    max-width: 1280px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 5px 0;
+}
+
+.dashboard-header p {
+    font-size: 1rem;
+    color: #718096;
+    margin: 0;
+}
+
+/* --- Table Styles --- */
+.table-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow-x: auto; /* For responsiveness on smaller screens */
+}
+
+.registration-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.registration-table th,
+.registration-table td {
+    padding: 16px 24px;
+    vertical-align: middle;
+}
+
+.registration-table thead {
+    background-color: #f7fafc;
+}
+
+.registration-table th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.registration-table tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.registration-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.registration-table tbody tr:hover {
+    background-color: #f7fafc;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.user-id {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* --- Status Badge Styles --- */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 9999px; /* Pill shape */
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.status-verified {
+    background-color: #c6f6d5; /* Light Green */
+    color: #22543d; /* Dark Green */
+}
+
+.status-unverified {
+    background-color: #fed7d7; /* Light Red */
+    color: #742a2a; /* Dark Red */
+}
+
+.status-paid {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #4a5568;
+    background-color: #edf2f7;
+}
+
+.status-pending {
+    background-color: #feebc8; /* Light Orange */
+    color: #7b341e; /* Dark Orange */
+}
