@@ -4,10 +4,6 @@ import { FaThList, FaThLarge } from 'react-icons/fa';
 import '../style/Registration.css'; 
 
 
-const StatusBadge = ({ text, type }) => {
-    return <span className={`status-badge status-${type}`}>{text}</span>;
-};
-
 const Registration = () => {
     const [participants, setParticipants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -51,15 +47,15 @@ const Registration = () => {
                             <td>{p.eventName}</td>
                             <td>
                                 {p.payment_id ? 
-                                    <StatusBadge text={p.payment_id} type="paid" /> : 
-                                    <StatusBadge text="Pending" type="pending" />
+                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> : 
+                                    <span style={{ color: '#f59e0b' }}>Pending</span>
                                 }
                             </td>
                             <td>{p.teamName || "N/A"}</td>
                             <td>
                                 {p.status ? 
-                                    <StatusBadge text="Verified" type="verified" /> : 
-                                    <StatusBadge text="Unverified" type="unverified" />
+                                    <span style={{ color: '#10b981' }}>Verified</span> : 
+                                    <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
                             </td>
                         </tr>
@@ -93,8 +89,8 @@ const Registration = () => {
                            <span className="label">Payment:</span>
                            <span className="value">
                                 {p.payment_id ? 
-                                    <StatusBadge text={p.payment_id} type="paid" /> : 
-                                    <StatusBadge text="Pending" type="pending" />
+                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> : 
+                                    <span style={{ color: '#f59e0b' }}>Pending</span>
                                 }
                            </span>
                         </div>
@@ -102,8 +98,8 @@ const Registration = () => {
                             <span className="label">Status:</span>
                             <span className="value">
                                 {p.status ? 
-                                    <StatusBadge text="Verified" type="verified" /> : 
-                                    <StatusBadge text="Unverified" type="unverified" />
+                                    <span style={{ color: '#10b981' }}>Verified</span> : 
+                                    <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
                             </span>
                         </div>
