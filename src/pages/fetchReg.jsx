@@ -134,12 +134,15 @@ const Registration = () => {
         <div className="dashboard-container">
             <header className="dashboard-header">
                 <div>
-                    <h1>Aerophilia Registrations</h1>
-                    <p>Showing {filteredParticipants.length} of {participants.length} total participants.</p>
+                    <div className="dashboard-img"><img src="https://aerophilia.space/alogo.svg" width='70px' alt="" /></div>
+                    <div>
+                        <h1>Aerophilia Registrations</h1>
+                        <p>Showing {filteredParticipants.length} of {participants.length} total participants.</p>
+                    </div>
                 </div>
                 <div className="controls">
                     <div className="control-group">
-                        <label htmlFor="search-input">Search by Name</label>
+                        <label htmlFor="search-input">Search by EventName</label>
                         <input 
                             id="search-input"
                             type="text" 
