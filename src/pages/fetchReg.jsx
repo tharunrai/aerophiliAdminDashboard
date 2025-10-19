@@ -4,11 +4,22 @@ import { FaThList, FaThLarge } from 'react-icons/fa';
 import '../style/Registration.css'; 
 
 
+
+
 const Registration = () => {
     const [participants, setParticipants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [viewMode, setViewMode] = useState('table');
     const [searchTerm, setSearchTerm] = useState(""); 
+
+    const formatDate = (timestamp) => {
+    const date = timestamp.toDate(); // Firestore Timestamp → JS Date
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // month 0-based
+    const year = String(date.getFullYear()).slice(-2); // last 2 digits
+    return `${day}/${month}/${year}`;
+    };
+
 
     useEffect(() => {
         composed().then(data => {
@@ -21,7 +32,7 @@ const Registration = () => {
     }, []);
     
     const filteredParticipants = participants.filter(p => 
-        p.userName.toLowerCase().includes(searchTerm.toLowerCase())
+        p.eventName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
@@ -31,6 +42,7 @@ const Registration = () => {
                 <thead>
                     <tr>
                         <th>Registrant Name</th>
+                        <th>Created at</th>
                         <th>Event Name</th>
                         <th>Payment ID</th>
                         <th>Team Name</th>
@@ -44,6 +56,7 @@ const Registration = () => {
                                 <div className="user-name">{p.userName}</div>
                                 <div className="user-id">{p.id}</div>
                             </td>
+                            <td>{formatDate(p.createdAt)}</td>
                             <td>{p.eventName}</td>
                             <td>
                                 {p.payment_id ? 
@@ -76,6 +89,10 @@ const Registration = () => {
                         <div className="info-row">
                             <span className="label">Name:</span>
                             <span className="value">{p.userName}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="label">Created At:</span>
+                            <span className="value">{formatDate(p.createdAt)}</span>
                         </div>
                         <div className="info-row">
                             <span className="label">Event:</span>
