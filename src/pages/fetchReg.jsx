@@ -144,6 +144,12 @@ const Registration = () => {
                             <span className="label">Amount:</span>
                             <span className="value">{p.eventAmount}</span>
                         </div>
+                        <div className="info-row">
+                            <span className="label">Phone No. :</span>
+                            <span className="value">{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</span>
+                        </div>
+
+                        
                     </div>
                 </div>
             ))}
