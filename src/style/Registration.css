@@ -112,6 +112,33 @@ body {
     border-radius: 4px;
 }
 
+/* --- Payment Filter Styles --- */
+.payment-filter {
+    display: flex;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.payment-filter button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.payment-filter button:hover { 
+    color: var(--accent-hover); 
+    background-color: var(--bg-color);
+}
+.payment-filter button.active {
+    background-color: var(--accent-color);
+    color: var(--bg-secondary);
+}
+
 /* --- Table Styles --- */
 .table-wrapper {
     background-color: var(--bg-secondary);

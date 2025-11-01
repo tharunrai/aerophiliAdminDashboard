@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { composed } from "../services/composeData";
+import { composed, getPhoneNo } from "../services/composeData";
 import { FaThList, FaThLarge } from 'react-icons/fa';
-import '../style/Registration.css'; 
-
+import '../style/Registration.css';
 
 
 
@@ -10,13 +9,15 @@ const Registration = () => {
     const [participants, setParticipants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [viewMode, setViewMode] = useState('table');
-    const [searchTerm, setSearchTerm] = useState(""); 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [paymentFilter, setPaymentFilter] = useState('all'); // 'all', 'paid', 'pending' 
+    const [phoneNumbers , setPhoneNumbers] = useState(null)
 
     const formatDate = (timestamp) => {
-    const date = timestamp.toDate(); // Firestore Timestamp → JS Date
+    const date = timestamp.toDate(); 
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // month 0-based
-    const year = String(date.getFullYear()).slice(-2); // last 2 digits
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const year = String(date.getFullYear()).slice(-2); 
     return `${day}/${month}/${year}`;
     };
 
@@ -29,11 +30,24 @@ const Registration = () => {
             console.error("Error fetching registration data:", error);
             setIsLoading(false);
         });
+
+        getPhoneNo()
+        .then(numbers =>{
+            setPhoneNumbers(numbers)
+        })
+        .catch(() => {});
     }, []);
     
-    const filteredParticipants = participants.filter(p => 
-        p.eventName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredParticipants = participants.filter(p => {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch = p.eventName.toLowerCase().includes(searchLower) || 
+                              p.userName.toLowerCase().includes(searchLower);
+        const matchesPayment = paymentFilter === 'all' || 
+            (paymentFilter === 'paid' && p.payment_id) || 
+            (paymentFilter === 'pending' && !p.payment_id);
+        return matchesSearch && matchesPayment;
+    });
+
 
 
     const renderTableView = () => (
@@ -47,6 +61,8 @@ const Registration = () => {
                         <th>Payment ID</th>
                         <th>Team Name</th>
                         <th>Status</th>
+                        <th>Amount</th>
+                        <th>Phone Number</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +87,9 @@ const Registration = () => {
                                     <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
                             </td>
+                            
+                            <td>{p.eventAmount}</td>
+                            <td>{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -120,6 +139,11 @@ const Registration = () => {
                                 }
                             </span>
                         </div>
+                        
+                        <div className="info-row">
+                            <span className="label">Amount:</span>
+                            <span className="value">{p.eventAmount}</span>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -142,15 +166,38 @@ const Registration = () => {
                 </div>
                 <div className="controls">
                     <div className="control-group">
-                        <label htmlFor="search-input">Search by EventName</label>
+                        <label htmlFor="search-input">Search by Name/Event</label>
                         <input 
                             id="search-input"
                             type="text" 
-                            placeholder="Enter name..." 
+                            placeholder="Enter name or event..." 
                             className="search-input"
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
                         />
+                    </div>
+                    <div className="control-group">
+                        <label>Payment Filter</label>
+                        <div className="payment-filter">
+                            <button 
+                                onClick={() => setPaymentFilter('all')} 
+                                className={paymentFilter === 'all' ? 'active' : ''}
+                            >
+                                All
+                            </button>
+                            <button 
+                                onClick={() => setPaymentFilter('paid')} 
+                                className={paymentFilter === 'paid' ? 'active' : ''}
+                            >
+                                Paid
+                            </button>
+                            <button 
+                                onClick={() => setPaymentFilter('pending')} 
+                                className={paymentFilter === 'pending' ? 'active' : ''}
+                            >
+                                Pending
+                            </button>
+                        </div>
                     </div>
                     <div className="control-group">
                         <label>View</label>
