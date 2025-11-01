@@ -84,7 +84,7 @@ body {
     color: var(--text-secondary);
     margin: 5px 0 0 0;
 }
-.controls { display: flex; gap: 20px; }
+.controls { display: flex; gap: 20px; flex-wrap: wrap; }
 .control-group { display: flex; flex-direction: column; gap: 8px; }
 .control-group label {
     font-size: 0.8rem;
@@ -212,7 +212,7 @@ body {
     color: var(--text-primary);
     font-size: 0.95rem;
     font-family: 'Inter', sans-serif;
-    min-width: 280px;
+    min-width: 200px;
     transition: all 0.3s ease;
     box-shadow: 0 1px 3px var(--shadow-color);
 }
