@@ -30,12 +30,18 @@ export const composed = async()=> {
         teams.forEach(t => {
             teamMap[t.id]=t.teamName;
         });
+          //making object like teamid : teamaccomodation
+    const teamAccMap = {};
+        teams.forEach(t => {
+            teamAccMap[t.id]=t.needAccommodation?"YES":"NO";
+            
+        });
 
 
         
-    const eventWithName = registrations.map(r=>({ ...r, eventName : eventMap[r.eventId]||"not found", userName : userMap[r.registrant_id]||"not found", teamName : teamMap[r.teamId]||"not found", eventAmount : eventAmountMap[r.eventId]||"not found"}))
+    const eventWithName = registrations.map(r=>({ ...r, eventName : eventMap[r.eventId]||"N/A", userName : userMap[r.registrant_id]||"N/A", teamName : teamMap[r.teamId]||"N/A", teamAcc : teamAccMap[r.teamId]||"N/A", eventAmount : eventAmountMap[r.eventId]||"N/A"}))
 
-    eventWithName.map(console.log)
+    console.log(eventWithName.teamAcc)
     
     return eventWithName;
 }catch (error) {

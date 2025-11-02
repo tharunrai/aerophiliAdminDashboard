@@ -60,9 +60,10 @@ const Registration = () => {
                         <th>Event Name</th>
                         <th>Payment ID</th>
                         <th>Team Name</th>
-                        <th>Status</th>
+                        {/* <th>Status</th> */}
                         <th>Amount</th>
                         <th>Phone Number</th>
+                        <th>Accomodation</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,15 +82,18 @@ const Registration = () => {
                                 }
                             </td>
                             <td>{p.teamName || "N/A"}</td>
-                            <td>
+                            {/* <td>
                                 {p.status ? 
                                     <span style={{ color: '#10b981' }}>Verified</span> : 
                                     <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
-                            </td>
+                            </td> */}
                             
                             <td>{p.eventAmount}</td>
                             <td>{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</td>
+                            {console.log(p.teamAcc)}
+                            <td>{p.teamAcc}</td>
+                            
                         </tr>
                     ))}
                 </tbody>
@@ -130,7 +134,7 @@ const Registration = () => {
                                 }
                            </span>
                         </div>
-                        <div className="info-row">
+                        {/* <div className="info-row">
                             <span className="label">Status:</span>
                             <span className="value">
                                 {p.status ? 
@@ -138,7 +142,7 @@ const Registration = () => {
                                     <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
                             </span>
-                        </div>
+                        </div> */}
                         
                         <div className="info-row">
                             <span className="label">Amount:</span>
@@ -148,7 +152,12 @@ const Registration = () => {
                             <span className="label">Phone No. :</span>
                             <span className="value">{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</span>
                         </div>
-
+                             <div className="info-row">
+                            <span className="label">Accommodation:</span>
+                            <span className="value">
+                                {p.teamAcc }
+                            </span>
+                        </div>
                         
                     </div>
                 </div>
