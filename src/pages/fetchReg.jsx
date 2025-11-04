@@ -10,40 +10,43 @@ const Registration = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [viewMode, setViewMode] = useState('table');
     const [searchTerm, setSearchTerm] = useState("");
-    const [paymentFilter, setPaymentFilter] = useState('all'); // 'all', 'paid', 'pending' 
-    const [phoneNumbers , setPhoneNumbers] = useState(null)
+    const [paymentFilter, setPaymentFilter] = useState('all');
+    const [phoneNumbers, setPhoneNumbers] = useState([])
 
     const formatDate = (timestamp) => {
-    const date = timestamp.toDate(); 
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); 
-    const year = String(date.getFullYear()).slice(-2); 
-    return `${day}/${month}/${year}`;
+        const date = timestamp.toDate();
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = String(date.getFullYear()).slice(-2);
+        return `${day}/${month}/${year}`;
     };
 
 
     useEffect(() => {
-        composed().then(data => {
-            setParticipants(data);
-            setIsLoading(false);
-        }).catch(error => {
-            console.error("Error fetching registration data:", error);
-            setIsLoading(false);
-        });
+        composed()
+            .then(data => {
+                setParticipants(data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error("Error fetching registration data:", error);
+                setIsLoading(false);
+            });
 
         getPhoneNo()
-        .then(numbers =>{
-            setPhoneNumbers(numbers)
-        })
-        .catch(() => {});
+            .then(numbers => {
+                console.log("Numbers is : ",numbers)
+                setPhoneNumbers(numbers);
+            })
+            .catch(error => console.error("Error fetching phone numbers:", error));
     }, []);
-    
+
     const filteredParticipants = participants.filter(p => {
         const searchLower = searchTerm.toLowerCase();
-        const matchesSearch = p.eventName.toLowerCase().includes(searchLower) || 
-                              p.userName.toLowerCase().includes(searchLower);
-        const matchesPayment = paymentFilter === 'all' || 
-            (paymentFilter === 'paid' && p.payment_id) || 
+        const matchesSearch = p.eventName.toLowerCase().includes(searchLower) ||
+            p.userName.toLowerCase().includes(searchLower);
+        const matchesPayment = paymentFilter === 'all' ||
+            (paymentFilter === 'paid' && p.payment_id) ||
             (paymentFilter === 'pending' && !p.payment_id);
         return matchesSearch && matchesPayment;
     });
@@ -76,8 +79,8 @@ const Registration = () => {
                             <td>{formatDate(p.createdAt)}</td>
                             <td>{p.eventName}</td>
                             <td>
-                                {p.payment_id ? 
-                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> : 
+                                {p.payment_id ?
+                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> :
                                     <span style={{ color: '#f59e0b' }}>Pending</span>
                                 }
                             </td>
@@ -88,12 +91,12 @@ const Registration = () => {
                                     <span style={{ color: '#ef4444' }}>Unverified</span>
                                 }
                             </td> */}
-                            
+
                             <td>{p.eventAmount}</td>
-                            <td>{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</td>
+                            <td>{phoneNumbers[p.leaderId] || "N/A"}</td>
                             {console.log(p.teamAcc)}
                             <td>{p.teamAcc}</td>
-                            
+
                         </tr>
                     ))}
                 </tbody>
@@ -121,18 +124,18 @@ const Registration = () => {
                             <span className="label">Event:</span>
                             <span className="value">{p.eventName}</span>
                         </div>
-                         <div className="info-row">
+                        <div className="info-row">
                             <span className="label">Team:</span>
                             <span className="value">{p.teamName || "N/A"}</span>
                         </div>
                         <div className="info-row">
-                           <span className="label">Payment:</span>
-                           <span className="value">
-                                {p.payment_id ? 
-                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> : 
+                            <span className="label">Payment:</span>
+                            <span className="value">
+                                {p.payment_id ?
+                                    <span style={{ color: '#10b981' }}>{p.payment_id}</span> :
                                     <span style={{ color: '#f59e0b' }}>Pending</span>
                                 }
-                           </span>
+                            </span>
                         </div>
                         {/* <div className="info-row">
                             <span className="label">Status:</span>
@@ -143,22 +146,22 @@ const Registration = () => {
                                 }
                             </span>
                         </div> */}
-                        
+
                         <div className="info-row">
                             <span className="label">Amount:</span>
                             <span className="value">{p.eventAmount}</span>
                         </div>
                         <div className="info-row">
                             <span className="label">Phone No. :</span>
-                            <span className="value">{p.phoneNo || phoneNumbers[participants.indexOf(p)] || "N/A"}</span>
+                            <span className="value">{p.phoneNo || phoneNumbers[p.leaderId] || "N/A"}</span>
                         </div>
-                             <div className="info-row">
+                        <div className="info-row">
                             <span className="label">Accommodation:</span>
                             <span className="value">
-                                {p.teamAcc }
+                                {p.teamAcc}
                             </span>
                         </div>
-                        
+
                     </div>
                 </div>
             ))}
@@ -182,10 +185,10 @@ const Registration = () => {
                 <div className="controls">
                     <div className="control-group">
                         <label htmlFor="search-input">Search by Name/Event</label>
-                        <input 
+                        <input
                             id="search-input"
-                            type="text" 
-                            placeholder="Enter name or event..." 
+                            type="text"
+                            placeholder="Enter name or event..."
                             className="search-input"
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
@@ -194,20 +197,20 @@ const Registration = () => {
                     <div className="control-group">
                         <label>Payment Filter</label>
                         <div className="payment-filter">
-                            <button 
-                                onClick={() => setPaymentFilter('all')} 
+                            <button
+                                onClick={() => setPaymentFilter('all')}
                                 className={paymentFilter === 'all' ? 'active' : ''}
                             >
                                 All
                             </button>
-                            <button 
-                                onClick={() => setPaymentFilter('paid')} 
+                            <button
+                                onClick={() => setPaymentFilter('paid')}
                                 className={paymentFilter === 'paid' ? 'active' : ''}
                             >
                                 Paid
                             </button>
-                            <button 
-                                onClick={() => setPaymentFilter('pending')} 
+                            <button
+                                onClick={() => setPaymentFilter('pending')}
                                 className={paymentFilter === 'pending' ? 'active' : ''}
                             >
                                 Pending
@@ -223,8 +226,8 @@ const Registration = () => {
                     </div>
                 </div>
             </header>
-            
-            {filteredParticipants.length > 0 ? 
+
+            {filteredParticipants.length > 0 ?
                 (viewMode === 'table' ? renderTableView() : renderCardView()) :
                 <div className="no-results">No participants found matching "{searchTerm}".</div>
             }
